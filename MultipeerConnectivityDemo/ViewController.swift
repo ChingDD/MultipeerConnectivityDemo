@@ -102,13 +102,13 @@ class ViewController: UIViewController {
     }
 
     @objc func seekUser(action: UIAlertAction) {
-        guard let peerSession else { return }
-        let peerBrowserVC = MCBrowserViewController(serviceType: serviceType, session: peerSession)
-        peerBrowserVC.delegate = self
-        present(peerBrowserVC, animated: true)
-//        peerBrowser = MCNearbyServiceBrowser(peer: peerId, serviceType: serviceType)
-//        peerBrowser?.delegate = self
-//        peerBrowser?.startBrowsingForPeers()
+//        guard let peerSession else { return }
+//        let peerBrowserVC = MCBrowserViewController(serviceType: serviceType, session: peerSession)
+//        peerBrowserVC.delegate = self
+//        present(peerBrowserVC, animated: true)
+        peerBrowser = MCNearbyServiceBrowser(peer: peerId, serviceType: serviceType)
+        peerBrowser?.delegate = self
+        peerBrowser?.startBrowsingForPeers()
     }
 }
 
@@ -166,7 +166,7 @@ extension ViewController: MCNearbyServiceAdvertiserDelegate {
         print("did Receive Invitation From Peer:\(peerID.displayName)")
         print("按下邀請了")
         var ac = UIAlertController(title: "Request", message: "\(peerID.displayName) wants to join", preferredStyle: .alert)
-        if let msg = String(data: context ?? Data(), encoding: .utf8) {
+        if let context, let msg = String(data: context, encoding: .utf8) {
             ac = UIAlertController(title: "Request", message: msg, preferredStyle: .alert)
         }
         let okAction = UIAlertAction(title: "Accept", style: .default) { _ in
