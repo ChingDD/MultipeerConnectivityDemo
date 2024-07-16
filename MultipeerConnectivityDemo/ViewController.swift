@@ -15,10 +15,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var msgTextField: UITextField!
     @IBOutlet weak var connectedDeviceLabel: UILabel!
 
-    /// I'm storing the connected peer ID so I could access
-    /// this easier when there's a host connected. I set this
-    /// to `nil` when the host is disconnected.
-
     var connectedPeers: [MCPeerID]? = nil {
         didSet {
             DispatchQueue.main.async {
@@ -32,24 +28,19 @@ class ViewController: UIViewController {
             }
         }
     }
-    /// The service type for this peer session.
-    /// You could specify this whatever you like.
+    // 這個session的serviceType，可以取任何喜歡的字串，但要獨一無二
     let serviceType = "item-peer"
 
-    /// The peer identifier for this device. You could also
-    /// specify this whatever you like, but here I used the
-    /// device's name from the `UIDevice` object.
+    // 這部裝置的識別，可以取任何喜歡的，但通常用UIDevice的name
     let peerId = MCPeerID(displayName: UIDevice.current.name)
 
-    /// The service advertiser so that the host/browser
-    /// could invite and connect to this device.
+    // 建立advertiser，用來發出request
     var peerAdvertiser: MCNearbyServiceAdvertiser?
 
-    /// The current peer session.
+    // The current peer session.
     var peerSession: MCSession?
 
-    /// The browser object to browser available nearby peers
-    /// to invite and connect to this device.
+    // 建立 browser 來搜尋周圍的advertiser，並對他們送出invitation
     var peerBrowser: MCNearbyServiceBrowser?
     var peerBrowserAssistant: MCAdvertiserAssistant?
 
@@ -202,16 +193,16 @@ extension ViewController: MCBrowserViewControllerDelegate {
     }
 }
 
-extension ViewController: MCAdvertiserAssistantDelegate {
-    func advertiserAssistantDidDismissInvitation(_ advertiserAssistant: MCAdvertiserAssistant) {
-        print("advertiser Assistant Did Dismiss Invitation")
-    }
-
-    func advertiserAssistantWillPresentInvitation(_ advertiserAssistant: MCAdvertiserAssistant) {
-
-        print("advertiser Assistant Will Present Invitation")
-    }
-}
+//extension ViewController: MCAdvertiserAssistantDelegate {
+//    func advertiserAssistantDidDismissInvitation(_ advertiserAssistant: MCAdvertiserAssistant) {
+//        print("advertiser Assistant Did Dismiss Invitation")
+//    }
+//
+//    func advertiserAssistantWillPresentInvitation(_ advertiserAssistant: MCAdvertiserAssistant) {
+//
+//        print("advertiser Assistant Will Present Invitation")
+//    }
+//}
 
 extension ViewController: MCNearbyServiceBrowserDelegate {
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
